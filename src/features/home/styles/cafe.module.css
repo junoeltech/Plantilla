@@ -1,5 +1,274 @@
 /* cafe.module.css - estilos específicos para la feature "cafe" */
 /* Usa variables globales definidas en :root de global.css */
+:root{
+  /* usa tus variables globales (global.css :root). Aquí hay backups si faltan */
+  --primary-100: #0077C2;
+  --accent-200: #00619a;
+  --glass: rgba(255,255,255,0.06);
+  --neon: rgba(0,191,255,0.18);
+  --soft-shadow: 0 10px 30px rgba(4,12,20,0.14);
+  --glass-border: rgba(255,255,255,0.06);
+  --glass-blur: 8px;
+}
+
+/* ------------------------------
+   GLOBAL HELPERS FOR THIS MODULE
+   ------------------------------ */
+.section {
+  padding: 56px 0;
+  position: relative;
+}
+
+/* animación reveal (CSS Modules) */
+.reveal {
+  transform: translateY(18px);
+  opacity: 0;
+  transition: transform .6s cubic-bezier(.2,.9,.2,1), opacity .45s ease;
+  will-change: transform, opacity;
+}
+
+/* isVisible también dentro del module */
+.isVisible {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+
+
+/* subtle neon ambient background */
+.ambient {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background-image: radial-gradient(circle at 10% 20%, rgba(0,119,194,0.06) 0%, transparent 12%),
+                    radial-gradient(circle at 80% 80%, rgba(0,191,255,0.035) 0%, transparent 18%);
+}
+
+/* glass card base */
+.glass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: 14px;
+  box-shadow: var(--soft-shadow);
+}
+
+/* ------------- HERO ------------- */
+.hero {
+  padding: 64px 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.heroInner {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: 28px;
+  align-items: center;
+}
+
+/* animated gradient title background (subtle) */
+.titleWrap {
+  position: relative;
+  display: inline-block;
+  padding: 6px 0 6px 0;
+}
+.heroTitle {
+  font-size: 2.6rem;
+  line-height: 1.02;
+  margin: 0 0 12px;
+  background: linear-gradient(90deg, var(--primary-100), var(--accent-200));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+}
+
+/* animated tagline - neon underline */
+.heroSub {
+  color: var(--text-200);
+  margin: 0 0 18px;
+  font-size: 1rem;
+  display:block;
+  position: relative;
+}
+.heroSub::after {
+  content: '';
+  display: block;
+  width: 60px;
+  height: 4px;
+  margin-top: 10px;
+  border-radius: 6px;
+  background: linear-gradient(90deg, rgba(0,191,255,0.9), rgba(0,119,194,0.7));
+  box-shadow: 0 4px 20px rgba(0,191,255,0.09);
+  transform: translateX(-8px);
+  transition: transform .38s ease;
+}
+.heroCtas { display:flex; gap:12px; margin-bottom:18px; }
+
+/* hero preview card — glass + animated float */
+.cupCard {
+  width: 100%;
+  max-width: 360px;
+  padding: 18px;
+  border-radius: 18px;
+  overflow: hidden;
+  position: relative;
+}
+.cupFloat {
+  transform-origin: center;
+  animation: floatY 6s ease-in-out infinite;
+}
+@keyframes floatY {
+  0% { transform: translateY(0) rotate(-0.2deg); }
+  50% { transform: translateY(-8px) rotate(0.4deg); }
+  100% { transform: translateY(0) rotate(-0.2deg); }
+}
+
+/* decorative gradient ring behind the cup */
+.cupRing {
+  position: absolute;
+  right: -40px;
+  top: -40px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: conic-gradient(from 120deg, rgba(0,191,255,0.06), rgba(0,119,194,0.04), rgba(0,191,255,0.06));
+  filter: blur(24px);
+  z-index: -1;
+}
+
+/* ------------- MENU ------------- */
+.menuSection { padding: 56px 0; }
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 18px;
+}
+
+/* futuristic menu card */
+.menuCard {
+  display: flex;
+  gap: 14px;
+  align-items: stretch;
+  padding: 16px;
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  transition: transform .22s cubic-bezier(.22,.9,.2,1), box-shadow .22s ease;
+  cursor: pointer;
+}
+.menuCard:hover {
+  transform: translateY(-10px) scale(1.01);
+  box-shadow: 0 20px 40px rgba(3,15,30,0.16);
+}
+
+/* left thumbnail block with animated gradient overlay */
+.menuThumb {
+  flex: 0 0 110px;
+  height: 86px;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+.menuThumb::after {
+  content:'';
+  position:absolute; inset:0;
+  background: linear-gradient(120deg, rgba(0,191,255,0.14), rgba(0,119,194,0.06));
+  mix-blend-mode: screen;
+  opacity: 0.95;
+  transition: opacity .3s ease;
+  pointer-events:none;
+}
+.menuBody h3 { margin: 0 0 6px; display:flex; justify-content:space-between; gap:8px; align-items:center; }
+.menuPrice { color: var(--accent-200); font-weight:700; }
+
+/* pill tags */
+.pill {
+  display:inline-block;
+  font-size: .78rem;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(0,119,194,0.06);
+  border: 1px solid rgba(0,119,194,0.06);
+  color: var(--primary-100);
+}
+
+/* action row with glass button micro-interaction */
+.menuActions { display:flex; gap:10px; margin-top:10px; }
+.btnGlass {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border: 1px solid rgba(255,255,255,0.04);
+  padding: 8px 12px;
+  border-radius: 10px;
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.btnGlass:hover { transform: translateY(-4px); box-shadow: 0 10px 30px rgba(0,119,194,0.08); }
+
+/* ------------- RESERVATION ------------- */
+.reservationSection { padding: 48px 0; }
+.reservationGrid { display:grid; grid-template-columns: 1fr 360px; gap:22px; align-items:start; }
+.resForm {
+  display:grid; gap:10px; padding:18px; border-radius:12px; border:1px solid rgba(255,255,255,0.04);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow: 0 12px 30px rgba(6,18,30,0.12);
+}
+.input {
+  padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04);
+  background: transparent; color: var(--text-100);
+  transition: box-shadow .15s ease, transform .12s ease;
+}
+.input:focus { box-shadow: 0 10px 30px rgba(0,119,194,0.08); transform: translateY(-2px); outline: none; }
+
+/* floating label style */
+.fieldWrap { position: relative; }
+.fieldWrap label {
+  position: absolute; left: 12px; top: 10px; font-size: .82rem; color: var(--text-200); transition: transform .18s ease, font-size .18s ease;
+  pointer-events: none;
+}
+.fieldWrap input:focus + label,
+.fieldWrap input:not(:placeholder-shown) + label,
+.fieldWrap textarea:not(:placeholder-shown) + label {
+  transform: translateY(-26px) scale(.9);
+  font-size: .72rem;
+}
+
+/* ------------- CONTACT ------------- */
+.contactSection { padding: 56px 0; background: linear-gradient(180deg, rgba(0,0,0,0.01), transparent); }
+.contactGrid { display:grid; grid-template-columns: 1fr 420px; gap:22px; align-items:start; }
+.contactCard { padding:18px; border-radius:12px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); box-shadow: 0 12px 30px rgba(6,18,30,0.08); }
+.contactForm input, .contactForm textarea { padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.04); background:transparent; }
+
+/* ------------- FOOTER ------------- */
+.siteFooter {
+  margin-top: 36px;
+  padding: 28px 0;
+  background: linear-gradient(180deg, rgba(2,6,12,0.02), rgba(0,0,0,0.01));
+  border-top: 1px solid rgba(255,255,255,0.02);
+}
+.footerInner { display:flex; justify-content:space-between; align-items:center; gap:20px; }
+.smallMuted { color: var(--text-200); font-size:.95rem; }
+
+/* -------------------------
+   Micro-animations + extras
+   ------------------------- */
+@keyframes slideInLeft {
+  from { transform: translateX(-18px); opacity: 0; } to { transform: translateX(0); opacity: 1; }
+}
+.kbd {
+  border-radius: 8px; padding: 6px 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* responsive */
+@media (max-width: 900px){
+  .heroInner { grid-template-columns: 1fr; }
+  .reservationGrid { grid-template-columns: 1fr; }
+  .contactGrid { grid-template-columns: 1fr; }
+  .menuThumb { display: none; }
+}
+
 /* ================= HEADER ================= */
 
 .header {
@@ -31,11 +300,72 @@
   color: #0d6efd;
 }
 
-/* Nav */
+/* NAV wrapper + nav */
+.navWrapper {
+  position: relative;
+}
+
+/* nav (inline links) */
 .nav {
   display: flex;
+  gap: 22px;
   align-items: center;
-  gap: 28px;
+  position: relative;
+}
+
+/* link styles */
+.navLink {
+  position: relative;
+  text-decoration: none;
+  color: var(--text-100);
+  font-weight: 600;
+  padding: 8px 4px;
+  font-size: 0.95rem;
+  transition: color .18s ease, transform .12s ease;
+}
+
+/* hover micro effect */
+.navLink:hover {
+  color: var(--primary-100);
+  transform: translateY(-2px);
+}
+
+/* active class for accessibility (optional color tweak) */
+.active {
+  color: var(--primary-100);
+}
+
+/* animated indicator (underline bar that moves) */
+.navIndicator {
+  position: absolute;
+  left: 0;
+  bottom: -6px; /* distance under links */
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-100), var(--accent-100));
+  border-radius: 6px;
+  transition: transform .28s cubic-bezier(.2,.9,.2,1), width .28s cubic-bezier(.2,.9,.2,1), opacity .18s ease;
+  will-change: transform, width;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* small responsive fix: allow nav scroll on small screens */
+@media (max-width: 720px) {
+  .nav {
+    overflow-x: auto;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+  .navIndicator {
+    bottom: 0;
+  }
+}
+
+/* header actions (button area) */
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 /* Links */
@@ -68,12 +398,6 @@
   width: 100%;
 }
 
-
-.hero {
-  padding: 64px 0;
-  background: linear-gradient(180deg, var(--primary-300), rgba(255,255,255,0.02));
-  border-bottom: 1px solid rgba(0,0,0,0.03);
-}
 
 .heroGrid {
   display: grid;
@@ -154,10 +478,7 @@
   font-size: 0.95rem;
 }
 
-/* ----- MENU ----- */
-.menuSection {
-  padding: 56px 0;
-}
+
 
 .menuGrid {
   display: grid;
@@ -210,10 +531,6 @@
   margin-top:10px;
 }
 
-/* ----- RESERVATIONS ----- */
-.reservationSection {
-  padding: 48px 0;
-}
 
 .reservationGrid {
   display:grid;
@@ -266,11 +583,7 @@
 }
 
 
-/* Contact (feature-specific) */
-.contactSection {
-  padding: 56px 0;
-  background: linear-gradient(180deg, rgba(0,0,0,0.01), transparent);
-}
+
 
 .contactGrid {
   display: grid;
