@@ -5,10 +5,17 @@ import Card from '@shared/components/Card'
 import useInView from '@shared/hooks/useInView'
 import styles from '../styles/cafe.module.css'
 
+// ✅ Importamos las imágenes desde src/assets
+
+import cappuccinoImg from '../../../assets/coffee-4159024_1280.jpg';
+import latteImg from '../../../assets/Coffee-beans-hot-cup-coffee-bag_2560x1600.jpg';
+import coldbrewImg from '../../../assets/tipos-de-cafe-social.jpg';
+
+
 const items = [
-  { id:1, name:'Cappuccino', price:'$40', desc:'Espuma cremosa y espresso.' },
-  { id:2, name:'Latte', price:'$45', desc:'Leche vaporizada y espresso.' },
-  { id:3, name:'Cold Brew', price:'$55', desc:'Infusión lenta y refrescante.' },
+  { id:1, name:'Cappuccino', price:'$40', desc:'Espuma cremosa y espresso.', img: cappuccinoImg },
+  { id:2, name:'Latte', price:'$45', desc:'Leche vaporizada y espresso.', img: latteImg },
+  { id:3, name:'Cold Brew', price:'$55', desc:'Infusión lenta y refrescante.', img: coldbrewImg },
   // add more
 ]
 
@@ -21,7 +28,6 @@ export default function MenuSection(){
       <Container>
         <h2 className={`${styles.reveal} ${visible ? styles.isVisible : ''}`}>Menú</h2>
         <p className={`${styles.reveal} ${visible ? styles.isVisible : ''}`}>Selección curada de bebidas y bocados.</p>
-
         <div className={styles.menuGrid}>
           {items.map(it => (
             <article key={it.id} className={`${styles.menuCard} ${styles.reveal} ${visible ? styles.isVisible : ''}`}>
