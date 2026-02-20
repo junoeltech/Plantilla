@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import Header from '../components/Header'
 import Hero from '../components/Hero'
-import MenuPreview from '../../cafe/components/MenuPreview'
+import MenuPreview from '../components/MenuPreview'
 import ReservationSection from '../components/ReservationSection'
 import Contact from '../components/Contact'
 import Footer from '../components/Footer'
-import CatalogModal from '../../cafe/components/CatalogModal'
+import CatalogModal from '../components/CatalogModal'
 
-export default function HomePage(){
+export default function CafeHome() {
   const [catalogOpen, setCatalogOpen] = useState(false)
+
   return (
     <>
       <Header />
@@ -18,7 +19,9 @@ export default function HomePage(){
         <ReservationSection />
         <Contact />
       </main>
+
       <Footer />
+
       <CatalogModal open={catalogOpen} onClose={() => setCatalogOpen(false)} />
     </>
   )

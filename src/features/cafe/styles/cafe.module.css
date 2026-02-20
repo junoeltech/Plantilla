@@ -1,0 +1,373 @@
+/* ====== Catalog modal (backdrop + card + grid) ====== */
+.catalogBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2,8,16,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 28px;
+  animation: fadeIn .18s ease;
+}
+@keyframes fadeIn { from { opacity: 0 } to { opacity: 1 } }
+
+.catalogCard {
+  width: min(1100px, 98%);
+  max-height: 88vh;
+  overflow: auto;
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(250,250,251,0.98), #fff);
+  padding: 18px;
+  box-shadow: 0 30px 90px rgba(2,10,30,0.6);
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+/* header area */
+.catalogHeader { display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.catalogControls { display:flex; gap:12px; align-items:center; }
+.searchInput {
+  min-width:260px;
+  padding:10px 12px;
+  border-radius:10px;
+  border:1px solid rgba(0,0,0,0.06);
+  background: #fff;
+}
+.iconClose {
+  padding:8px 10px;
+  border-radius:10px;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  font-size:18px;
+}
+
+/* grid of items */
+.catalogGrid {
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 14px;
+  margin-top:6px;
+  padding-bottom: 12px;
+}
+
+/* individual item inside modal */
+.catalogItem { display:flex; gap:12px; padding:12px; align-items:flex-start; }
+.catalogThumb { flex: 0 0 100px; height: 80px; border-radius:8px; overflow:hidden; }
+.catalogBody { flex:1; display:flex; flex-direction:column; gap:8px; }
+
+/* pill tag (reuse) */
+.pill { display:inline-block; font-size:.78rem; padding:4px 8px; border-radius:999px; background: rgba(0,119,194,0.06); color:var(--primary-100); border:1px solid rgba(0,119,194,0.06); }
+
+/* responsive */
+@media (max-width: 820px) {
+  .catalogCard { padding:12px; }
+  .catalogThumb { display:none; }
+}
+
+
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 columnas por defecto */
+  gap: 18px;
+  align-items: start;
+}
+
+/* tarjeta de catálogo (vertical) */
+.menuCard {
+  display: flex;
+  flex-direction: column; /* imagen arriba, cuerpo abajo */
+  background: linear-gradient(180deg,#fff,#fff);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,0.04);
+  transition: transform .18s ease, box-shadow .18s ease;
+  min-height: 260px;
+}
+.menuCard:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(12,20,30,0.06); }
+
+/* miniatura */
+.menuThumb {
+  width: 100%;
+  height: 160px;
+  background: #f3f5f6;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.menuThumb img { width:100%; height:100%; object-fit:cover; display:block; }
+
+/* cuerpo de la tarjeta */
+.menuBody {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1 1 auto;
+}
+.menuBody h3 { margin:0; display:flex; justify-content:space-between; align-items:center; gap:12px; }
+.menuPrice { color: var(--accent-200); font-weight:700; }
+
+/* acciones */
+.menuActions { margin-top:auto; display:flex; gap:8px; align-items:center; }
+
+/* ===== Catalog modal grid (misma idea) ===== */
+.catalogGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+/* item dentro del modal: usar diseño vertical también */
+.catalogItem {
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  padding:10px;
+  border-radius:10px;
+}
+
+/* Responsive: tablets y móviles */
+@media (max-width: 1100px) {
+  .menuGrid, .catalogGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 700px) {
+  .menuGrid, .catalogGrid { grid-template-columns: 1fr; }
+  .menuThumb { height: 180px; }
+}
+
+.menuPreview {
+  padding: 48px 24px; /* espacio arriba/abajo y pequeños laterales */
+  background: linear-gradient(180deg, rgba(246, 250, 251, 1), rgba(255,255,255,1));
+}
+/* limita ancho interno para que no llegue al borde */
+.menuPreviewInner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.menuPreviewHeader{
+  text-align:center;
+  margin-bottom: 40px;
+}
+
+.menuPreviewHeader h2{
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+.menuPreviewHeader p {
+  color: var(--text-200);
+  margin: 0 0 18px;
+}
+.menuTitleRow{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.menuPreviewFooter{
+  display:flex;
+  justify-content:center;
+  margin-top: 40px;
+}
+/* GRID */
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  align-items: stretch;
+}
+
+/* Card pulida */
+.menuCard {
+  display: flex;
+  flex-direction: column;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfcfd 100%);
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(10,20,30,0.04);
+  box-shadow: 0 8px 30px rgba(6,18,30,0.06);
+  transition: transform .18s cubic-bezier(.2,.9,.2,1), box-shadow .18s ease, border-color .18s ease;
+  min-height: 320px;
+}
+
+/* Hover elegante */
+.menuCard:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 24px 60px rgba(6,18,30,0.10);
+  border-color: rgba(0,119,194,0.08);
+}
+
+/* Thumb grande (imagen) */
+.menuThumb {
+  width: 100%;
+  height: 180px;
+  background: linear-gradient(180deg,#f3f6f7,#eef4f6);
+  display: block;
+  flex-shrink: 0;
+}
+.menuThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display:block;
+}
+
+/* Cuerpo */
+.menuBody {
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1 1 auto;
+}
+.menuBody h3 {
+  margin: 0;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 12px;
+  font-size: 1.05rem;
+}
+.menuPrice {
+  color: var(--primary-100);
+  font-weight: 800;
+  background: rgba(0,119,194,0.06);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: .95rem;
+}
+
+/* textos */
+.muted { color: var(--text-200); line-height:1.6; }
+
+/* acciones */
+.menuActions {
+  margin-top: auto;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+/* boton pequeño estilizado (si usas btn classes globales, ok) */
+.btnSmall {
+  padding: 8px 12px;
+  border-radius: 10px;
+  font-weight:600;
+  border: 1px solid rgba(0,119,194,0.08);
+  background: transparent;
+}
+.btnPrimary {
+  background: var(--primary-100);
+  color: white;
+  border: 0;
+  box-shadow: 0 8px 20px rgba(0,119,194,0.12);
+}
+
+/* ====== Catalog modal: más limpio y espacioso ====== */
+.catalogBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2,10,20,0.55);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index: 9999;
+  padding: 28px;
+}
+.catalogCard {
+  width: min(1100px, 98%);
+  max-height: 88vh;
+  overflow:auto;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff, #fbfcfe);
+  padding: 20px;
+  box-shadow: 0 40px 100px rgba(3,12,30,0.6);
+  border: 1px solid rgba(255,255,255,0.4);
+}
+
+/* Header modal */
+.catalogHeader {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  margin-bottom: 12px;
+}
+.catalogHeader h3 { margin:0; font-size:1.25rem; }
+.catalogControls { display:flex; gap:10px; align-items:center; }
+
+/* Search input más bonito */
+.searchInput {
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(10,20,30,0.06);
+  min-width: 260px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+}
+
+/* Grid dentro del modal */
+.catalogGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  align-items: stretch;
+}
+
+/* Article item */
+.catalogItem {
+  display:flex;
+  flex-direction:column;
+  background: linear-gradient(180deg,#fff,#fbfdff);
+  border-radius: 12px;
+  overflow:hidden;
+  border: 1px solid rgba(10,20,30,0.04);
+  padding: 12px;
+  transition: transform .16s ease, box-shadow .16s ease;
+}
+.catalogItem:hover { transform: translateY(-6px); box-shadow: 0 22px 50px rgba(6,18,30,0.08); }
+
+/* Thumb + badge */
+.catalogThumb {
+  width: 100%;
+  aspect-ratio: 4/3;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #f4f4f4;
+}
+.catalogThumb img { 
+    width:100%; height:100%; object-fit:cover; display:block;
+ }
+
+/* tag pill */
+.pill {
+  display:inline-block;
+  font-size:.78rem;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(0,119,194,0.06);
+  border: 1px solid rgba(0,119,194,0.06);
+  color: var(--primary-100);
+}
+
+/* detalle: precio pequeño a la derecha */
+.catalogBodyHeader {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+}
+
+/* empty state centrado */
+.emptyState { padding: 18px; text-align:center; color:var(--text-200); }
+
+/* responsive */
+@media (max-width:1100px) {
+  .menuGrid, .catalogGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width:720px) {
+  .menuGrid, .catalogGrid { grid-template-columns: 1fr; }
+  .menuPreview { padding-left: 14px; padding-right: 14px; }
+  .catalogCard { padding: 12px; }
+  .searchInput { min-width: 140px; }
+}
