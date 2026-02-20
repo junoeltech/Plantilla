@@ -1,24 +1,36 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import { useRef } from 'react'
 import Container from '@shared/components/Container';
 import Button from '@shared/components/Button';
-import useInView from '@shared/hooks/useInView'
 import styles from '../styles/cafe.module.css';
+
 import coffeeHero from '../../../assets/coffee-4159024_1280.jpg';
 import croissant from '../../../assets/Coffee-beans-hot-cup-coffee-bag_2560x1600.jpg';
 import latte from '../../../assets/tipos-de-cafe-social.jpg';
 
-const images = [coffeeHero, croissant, latte];
+const slides = [
+  {
+    img: coffeeHero,
+    title: "Especial del día",
+    desc: "Espresso doble + Croissant"
+  },
+  {
+    img: croissant,
+    title: "Latte artesanal",
+    desc: "Con leche vaporizada y espuma cremosa"
+  },
+  {
+    img: latte,
+    title: "Cold Brew refrescante",
+    desc: "Infusión lenta para un sabor suave"
+  }
+];
 
-export default function Hero(){
-  const ref = useRef(null)
-  const onView = useInView(ref)
-
+export default function Hero() {
   const [index, setIndex] = useState(0);
 
-  const next = () => setIndex((i) => (i + 1) % images.length);
-  const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
+  const next = () => setIndex((i) => (i + 1) % slides.length);
+  const prev = () => setIndex((i) => (i - 1 + slides.length) % slides.length);
 
   useEffect(() => {
     const interval = setInterval(next, 4000);
@@ -26,8 +38,7 @@ export default function Hero(){
   }, []);
 
   return (
-    <section className={styles.hero} ref={ref}>
-      <div className={styles.ambient} aria-hidden />
+    <section className={styles.hero}>
       <Container>
         <div className={styles.heroGrid}>
 
@@ -39,8 +50,8 @@ export default function Hero(){
               Ambiente cálido, café artesanal y experiencia única.
             </p>
             <div className={styles.heroCtas}>
-              <Button onClick={() => document.getElementById('menuPreview')?.scrollIntoView({behavior:'smooth'})}>Ver menú</Button>
-              <Button variant="ghost" onClick={() => document.getElementById('reservas')?.scrollIntoView({behavior:'smooth'})}>Reservar</Button>
+              <Button>Ver menú</Button>
+              <Button variant="outline">Reservar mesa</Button>
             </div>
           </div>
 
@@ -48,8 +59,8 @@ export default function Hero(){
             <div className={styles.cupCard}>
               <AnimatePresence mode="wait">
                 <motion.img
-                  key={images[index]}
-                  src={images[index]}
+                  key={slides[index].img}
+                  src={slides[index].img}
                   alt="Producto"
                   initial={{ opacity: 0, x: 100 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -58,18 +69,20 @@ export default function Hero(){
                   className={styles.cupImg}
                 />
               </AnimatePresence>
-              <div>
-                <h4>Especial del día</h4>
-                <p className={styles.muted}>
-                  Espresso doble + Croissant
-                </p>
+
+              <div className={styles.cupText}>
+                <h4>{slides[index].title}</h4>
+                <p className={styles.muted}>{slides[index].desc}</p>
               </div>
+
+              {/* ✅ Botones dentro del cuadro, centrados debajo del texto */}
               <div className={styles.carouselControls}>
-                <button onClick={prev}>◀</button>
-                <button onClick={next}>▶</button>
+                <button className={styles.carouselBtn} onClick={prev}>◀</button>
+                <button className={styles.carouselBtn} onClick={next}>▶</button>
               </div>
             </div>
           </div>
+
         </div>
       </Container>
     </section>
