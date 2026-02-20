@@ -5,8 +5,6 @@ import Container from '@shared/components/Container';
 import Button from '@shared/components/Button';
 import useInView from '@shared/hooks/useInView'
 import styles from '../styles/cafe.module.css';
-
-// Asegúrate de importar las imágenes correctamente
 import coffeeHero from '../../../assets/coffee-4159024_1280.jpg';
 import croissant from '../../../assets/Coffee-beans-hot-cup-coffee-bag_2560x1600.jpg';
 import latte from '../../../assets/tipos-de-cafe-social.jpg';
@@ -22,7 +20,6 @@ export default function Hero(){
   const next = () => setIndex((i) => (i + 1) % images.length);
   const prev = () => setIndex((i) => (i - 1 + images.length) % images.length);
 
-  // Autoplay cada 4 segundos
   useEffect(() => {
     const interval = setInterval(next, 4000);
     return () => clearInterval(interval);
@@ -42,7 +39,7 @@ export default function Hero(){
               Ambiente cálido, café artesanal y experiencia única.
             </p>
             <div className={styles.heroCtas}>
-              <Button onClick={() => document.getElementById('menu')?.scrollIntoView({behavior:'smooth'})}>Ver menú</Button>
+              <Button onClick={() => document.getElementById('menuPreview')?.scrollIntoView({behavior:'smooth'})}>Ver menú</Button>
               <Button variant="ghost" onClick={() => document.getElementById('reservas')?.scrollIntoView({behavior:'smooth'})}>Reservar</Button>
             </div>
           </div>

@@ -4,10 +4,9 @@ import Button from '@shared/components/Button'
 import styles from '../styles/cafe.module.css'
 
 const navItems = [
-  { id: 'menu', label: 'Menú' },
+  { id: 'menuPreview', label: 'Menú' },
   { id: 'reservas', label: 'Reservas' },
   { id: 'contact', label: 'Contacto' },
-  // agrega más si necesitas
 ]
 
 export default function Header() {
@@ -16,7 +15,6 @@ export default function Header() {
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 })
   const [activeId, setActiveId] = useState(null)
 
-  // Smooth scroll handler with header offset
   function onNavClick(e, targetId) {
     e.preventDefault()
     const target = document.getElementById(targetId)
@@ -25,12 +23,10 @@ export default function Header() {
     const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 0
     const scrollTo = window.pageYOffset + target.getBoundingClientRect().top - headerHeight - 12 // small gap
     window.scrollTo({ top: scrollTo, behavior: 'smooth' })
-    // set active link immediately (visual feedback)
     setActiveId(targetId)
     moveIndicatorTo(targetId)
   }
 
-  // Move indicator under link
   function moveIndicatorTo(id) {
     if (!navRef.current) return setIndicatorStyle(s => ({ ...s, opacity: 0 }))
     const link = navRef.current.querySelector(`[data-section="${id}"]`)
@@ -42,7 +38,6 @@ export default function Header() {
     setIndicatorStyle({ left, width, opacity: 1 })
   }
 
-  // Update indicator on resize
   useEffect(() => {
     function onResize() {
       if (activeId) moveIndicatorTo(activeId)
@@ -51,7 +46,6 @@ export default function Header() {
     return () => window.removeEventListener('resize', onResize)
   }, [activeId])
 
-  // Scroll spy using IntersectionObserver
   useEffect(() => {
     const sections = navItems
       .map(n => document.getElementById(n.id))
@@ -65,7 +59,6 @@ export default function Header() {
     const observer = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
-          // when a section is at least 40% visible, mark it active
           if (entry.isIntersecting) {
             const id = entry.target.id
             setActiveId(id)
@@ -75,7 +68,7 @@ export default function Header() {
       },
       {
         root: null,
-        rootMargin: `-${headerHeight + 12}px 0px -40% 0px`, // adjust when a section is considered "active"
+        rootMargin: `-${headerHeight + 12}px 0px -40% 0px`, 
         threshold: [0.4, 0.6],
       }
     )
@@ -83,14 +76,12 @@ export default function Header() {
     sections.forEach(s => observer.observe(s))
 
     return () => observer.disconnect()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []) // run once
+  
+  }, [])
 
-  // on mount try to set indicator to first active or first nav item
   useEffect(() => {
     const initial = activeId || navItems[0].id
     moveIndicatorTo(initial)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
@@ -115,7 +106,7 @@ export default function Header() {
                 </a>
               ))}
 
-              {/* animated indicator */}
+        
               <span
                 aria-hidden
                 className={styles.navIndicator}
