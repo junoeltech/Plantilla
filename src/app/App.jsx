@@ -1,5 +1,5 @@
-import HomePage from '@features/home'
+import HomePage from "@features/home";
 
 export default function App() {
-  return <HomePage />
+  return <HomePage />;
 }
