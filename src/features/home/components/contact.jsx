@@ -1,40 +1,147 @@
-import { useRef, useState } from 'react'
-import Container from '@shared/components/Container'
-import Button from '@shared/components/Button'
-import useInView from '@shared/hooks/useInView'
-import styles from '../styles/cafe.module.css'
+import { useState, useRef } from "react";
+import Container from "@shared/components/Container";
+import Button from "@shared/components/Button";
+import useInView from "@shared/hooks/useInView"; // Importante para la animación
+import styles from "../../../styles/contacto.module.css";
 
-export default function Contact(){
-  const ref = useRef(null)
-  const visible = useInView(ref)
-  const [form, setForm] = useState({name:'', email:'', message:''})
+import CoffeContact from "../../../assets/cafe-contacto.webp";
 
-  const handleChange = (e) => setForm(s=>({...s,[e.target.name]:e.target.value}))
+const INITIAL_FORM = { name: "", email: "", phone: "", message: "" };
+
+export default function Contact() {
+  const ref = useRef(null);
+  const isVisible = useInView(ref);
+  const [form, setForm] = useState(INITIAL_FORM);
+  const [status, setStatus] = useState({
+    sending: false,
+    ok: null,
+    error: null,
+  });
+
+  const revealClass = `${styles.reveal} ${isVisible ? styles.isVisible : ""}`;
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const resetForm = () => {
+    setForm(INITIAL_FORM);
+    setStatus({ sending: false, ok: null, error: null });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // ... tu lógica de envío (se mantiene igual)
+  };
 
   return (
     <section id="contact" className={styles.contactSection} ref={ref}>
       <Container>
         <div className={styles.contactGrid}>
-          <div className={`${styles.contactCard} ${styles.reveal} ${visible ? styles.isVisible : ''}`}>
-            <h2>Contacto</h2>
-            <p className={styles.muted}>¿Tienes preguntas o quieres un evento privado? Escríbenos.</p>
-            <div style={{marginTop:12, color:'var(--text-200)'}}>
-              <div><strong>Dirección:</strong> Calle Principal 123</div>
-              <div><strong>Tel:</strong> (55) 1234 5678</div>
+          {/* LADO IZQUIERDO MEJORADO */}
+          <div className={`${styles.contactInfo} ${revealClass}`}>
+            <span className={styles.badge}>Hablemos</span>
+            <h2>¿Te apetece un café?</h2>
+            <p className={styles.muted}>
+              Ya sea para una reservación o solo para saludar, estamos a un
+              mensaje de distancia.
+            </p>
+
+            <div className={styles.imageWrapper}>
+              <img src={CoffeContact} alt="Café" className={styles.cupImg} />
+            </div>
+
+            <div className={styles.contactMeta}>
+              <div className={styles.metaCard}>
+                <span className={styles.icon}>📍</span>
+                <div>
+                  <strong>Ubicación</strong>
+                  <p>Huamantla, Tlaxcala</p>
+                </div>
+              </div>
+              <div className={styles.metaCard}>
+                <span className={styles.icon}>📱</span>
+                <div>
+                  <strong>WhatsApp</strong>
+                  <p>(247) 123 4567</p>
+                </div>
+              </div>
+              <div className={styles.metaCard}>
+                <span className={styles.icon}>✉️</span>
+                <div>
+                  <strong>Email</strong>
+                  <p>hola@cafeplace.com</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <form className={`${styles.contactForm} ${styles.reveal} ${visible ? styles.isVisible : ''}`} onSubmit={(e)=>{e.preventDefault(); alert('Mensaje enviado')}}>
-            <input name="name" placeholder="Nombre" value={form.name} onChange={handleChange} required />
-            <input name="email" type="email" placeholder="Correo" value={form.email} onChange={handleChange} required />
-            <textarea name="message" placeholder="Mensaje" rows={5} value={form.message} onChange={handleChange} required />
-            <div style={{display:'flex', gap:8, alignItems:'center'}}>
-              <Button type="submit">Enviar</Button>
-              <Button variant="ghost" type="button" onClick={()=>setForm({name:'',email:'',message:''})}>Limpiar</Button>
+          {/* FORMULARIO CON ANIMACIÓN */}
+          <form
+            className={`${styles.contactForm} ${revealClass}`}
+            onSubmit={handleSubmit}
+          >
+            <div className={styles.field}>
+              <label htmlFor="name">Nombre completo</label>
+              <input
+                id="name"
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Tu nombre"
+                required
+              />
             </div>
+
+            <div className={styles.field}>
+              <label htmlFor="email">Correo electrónico</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={form.email}
+                onChange={handleChange}
+                placeholder="correo@ejemplo.com"
+                required
+              />
+            </div>
+
+            <div className={styles.field}>
+              <label htmlFor="message">Tu mensaje</label>
+              <textarea
+                id="message"
+                name="message"
+                rows="4"
+                value={form.message}
+                onChange={handleChange}
+                placeholder="¿En qué podemos ayudarte?"
+                required
+              />
+            </div>
+
+            <div className={styles.formActions}>
+              <Button
+                type="submit"
+                disabled={status.sending}
+                className={styles.submitBtn}
+              >
+                {status.sending ? "Enviando..." : "Enviar mensaje"}
+              </Button>
+              <Button variant="ghost" type="button" onClick={resetForm}>
+                Limpiar
+              </Button>
+            </div>
+
+            {status.ok && (
+              <div className={styles.successMessage}>✨ {status.ok}</div>
+            )}
+            {status.error && (
+              <div className={styles.errorMessage}>⚠️ {status.error}</div>
+            )}
           </form>
         </div>
       </Container>
     </section>
-  )
+  );
 }

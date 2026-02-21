@@ -1,29 +1,29 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
-import Container from '@shared/components/Container';
-import Button from '@shared/components/Button';
-import styles from '../styles/cafe.module.css';
+import Container from "@shared/components/Container";
+import Button from "@shared/components/Button";
+import styles from "../styles/cafe.module.css";
 
-import coffeeHero from '../../../assets/coffee-4159024_1280.jpg';
-import croissant from '../../../assets/Coffee-beans-hot-cup-coffee-bag_2560x1600.jpg';
-import latte from '../../../assets/tipos-de-cafe-social.jpg';
+import coffeeHero from "../../../assets/coffee-4159024_1280.jpg";
+import croissant from "../../../assets/Coffee-beans-hot-cup-coffee-bag_2560x1600.jpg";
+import latte from "../../../assets/tipos-de-cafe-social.jpg";
 
 const slides = [
   {
     img: coffeeHero,
     title: "Especial del día",
-    desc: "Espresso doble + Croissant"
+    desc: "Espresso doble + Croissant",
   },
   {
     img: croissant,
     title: "Latte artesanal",
-    desc: "Con leche vaporizada y espuma cremosa"
+    desc: "Con leche vaporizada y espuma cremosa",
   },
   {
     img: latte,
     title: "Cold Brew refrescante",
-    desc: "Infusión lenta para un sabor suave"
-  }
+    desc: "Infusión lenta para un sabor suave",
+  },
 ];
 
 export default function Hero() {
@@ -41,11 +41,8 @@ export default function Hero() {
     <section className={styles.hero}>
       <Container>
         <div className={styles.heroGrid}>
-
           <div>
-            <h1 className={styles.heroTitle}>
-              Tu café perfecto cada mañana
-            </h1>
+            <h1 className={styles.heroTitle}>Tu café perfecto cada mañana</h1>
             <p className={styles.heroSub}>
               Ambiente cálido, café artesanal y experiencia única.
             </p>
@@ -77,12 +74,15 @@ export default function Hero() {
 
               {/* ✅ Botones dentro del cuadro, centrados debajo del texto */}
               <div className={styles.carouselControls}>
-                <button className={styles.carouselBtn} onClick={prev}>◀</button>
-                <button className={styles.carouselBtn} onClick={next}>▶</button>
+                <button className={styles.carouselBtn} onClick={prev}>
+                  ◀
+                </button>
+                <button className={styles.carouselBtn} onClick={next}>
+                  ▶
+                </button>
               </div>
             </div>
           </div>
-
         </div>
       </Container>
     </section>

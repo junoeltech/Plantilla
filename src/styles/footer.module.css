@@ -1,0 +1,75 @@
+/* =========================
+   FOOTER STYLES
+========================= */
+
+.siteFooter {
+    padding: 40px 0;
+    background-color: #ffffff;
+    border-top: 1px solid #f1f5f9;
+    margin-top: 60px;
+}
+
+.footerInner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footerBrand strong {
+    font-size: 1.1rem;
+    color: #1e293b;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.smallMuted {
+    font-size: 0.85rem;
+    color: #64748b;
+}
+
+/* Enlaces y Versión */
+.footerLinks {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.footerEmail {
+    font-size: 0.9rem;
+    color: #64748b;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.footerEmail:hover {
+    color: #2563eb;
+    /* Color de énfasis */
+}
+
+/* Estilo para el Badge de Versión (kbd) */
+.kbd {
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    color: #475569;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+/* Ajuste para móviles */
+@media (max-width: 600px) {
+    .footerInner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footerLinks {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
