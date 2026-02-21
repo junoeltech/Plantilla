@@ -3,24 +3,27 @@ import React, { useEffect, useRef, useState } from 'react'
 import styles from '../styles/cafe.module.css'
 import MENU from '../data/menu'
 import Card from '@shared/components/Card'
+import ProductDetailModal from './ProductDetailModal' // asegúrate de que exista
 
 export default function CatalogModal({ open, onClose }) {
   const [query, setQuery] = useState('')
   const [items, setItems] = useState(MENU)
   const [detail, setDetail] = useState(null)
+  const [favorites, setFavorites] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('favorites') || '[]') } catch { return [] }
+  })
+
   const backdropRef = useRef(null)
   const modalRef = useRef(null)
   const previouslyFocused = useRef(null)
 
   useEffect(() => {
-    setItems(MENU)
-    setQuery('')
+    if (open) { setItems(MENU); setQuery('') }
   }, [open])
 
   useEffect(() => {
     const q = query.trim().toLowerCase()
-    if (!q) setItems(MENU)
-    else setItems(MENU.filter(i => `${i.name} ${i.desc} ${i.tag}`.toLowerCase().includes(q)))
+    setItems(q ? MENU.filter(i => `${i.name} ${i.desc} ${i.tag}`.toLowerCase().includes(q)) : MENU)
   }, [query])
 
   useEffect(() => {
@@ -34,14 +37,9 @@ export default function CatalogModal({ open, onClose }) {
       previouslyFocused.current = document.activeElement
       document.addEventListener('keydown', onKey)
       setTimeout(() => modalRef.current?.focus(), 50)
-    } else {
-      document.removeEventListener('keydown', onKey)
-      previouslyFocused.current?.focus && previouslyFocused.current.focus()
     }
     return () => document.removeEventListener('keydown', onKey)
   }, [open, onClose, detail])
-
-  if (!open) return null
 
   function onBackdropClick(e) {
     if (e.target === backdropRef.current) {
@@ -49,6 +47,16 @@ export default function CatalogModal({ open, onClose }) {
       else onClose()
     }
   }
+
+  function toggleFavorite(id) {
+    setFavorites(prev => {
+      const updated = prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+      try { localStorage.setItem('favorites', JSON.stringify(updated)) } catch {}
+      return updated
+    })
+  }
+
+  if (!open) return null
 
   return (
     <>
@@ -58,7 +66,6 @@ export default function CatalogModal({ open, onClose }) {
         onMouseDown={onBackdropClick}
         role="dialog"
         aria-modal="true"
-        aria-label="Catálogo completo"
       >
         <div className={styles.catalogCard} ref={modalRef} tabIndex={-1}>
           <header className={styles.catalogHeader}>
@@ -75,7 +82,7 @@ export default function CatalogModal({ open, onClose }) {
                 onChange={(e) => setQuery(e.target.value)}
                 aria-label="Buscar en catálogo"
               />
-              <button className={styles.iconClose} onClick={() => onClose()} aria-label="Cerrar catálogo">✕</button>
+              <button className="btn btnOutline" onClick={onClose}>Cerrar</button>
             </div>
           </header>
 
@@ -83,43 +90,33 @@ export default function CatalogModal({ open, onClose }) {
             {items.length === 0 ? (
               <div className={styles.emptyState}>No se encontraron resultados.</div>
             ) : items.map(it => (
-              <Card key={it.id} className={`${styles.catalogItem} ${styles.glass}`}>
+              <Card key={it.id} className={styles.catalogItem}>
+                {/* para permitir el botón flotante, el card debe ser position:relative */}
                 <div className={styles.catalogThumb}>
-                  {it.img ? <img src={it.img} alt={it.name} style={{width:'100%',height:'100%',objectFit:'cover'}}/> : null}
+                  {it.img && <img src={it.img} alt={it.name} />}
                 </div>
 
-                <div className={styles.catalogBody}>
-                  <div style={{display:'flex', justifyContent:'space-between', alignItems:'center'}}>
+                {/* corazón favorito flotante */}
+                <button
+                  type="button"
+                  className={styles.favoriteFloat}
+                  onClick={() => toggleFavorite(it.id)}
+                  aria-pressed={favorites.includes(it.id)}
+                >
+                  {favorites.includes(it.id) ? '❤️' : '🤍'}
+                </button>
+
+                <div className={styles.catalogContent}>
+                  <div className={styles.catalogBodyHeader}>
                     <strong>{it.name}</strong>
                     <div className={styles.menuPrice}>${it.price}</div>
                   </div>
 
-                  <div className={styles.muted} style={{marginTop:6}}>{it.desc}</div>
+                  <p className={styles.muted}>{it.desc}</p>
+                </div>
 
-                  <div style={{marginTop:12, display:'flex', gap:8, alignItems:'center'}}>
-                    <button className="btn btnGlass" onClick={() => setDetail(it)}>Ver</button>
-
-                    {/* Visual-only: boton de favorito local (opcional) */}
-                    <button
-                      className="btn btnOutline"
-                      onClick={() => {
-                        // simple visual feedback: guardar id en localStorage como favorito (opcional)
-                        try {
-                          const fav = JSON.parse(localStorage.getItem('favorites') || '[]')
-                          if (!fav.includes(it.id)) {
-                            localStorage.setItem('favorites', JSON.stringify([...fav, it.id]))
-                            alert(`${it.name} agregado a favoritos (local)`)
-                          } else {
-                            alert(`${it.name} ya está en favoritos`)
-                          }
-                        } catch { /* ignore */ }
-                      }}
-                    >
-                      ♥ Favorito
-                    </button>
-
-                    <div className={styles.pill}>{it.tag}</div>
-                  </div>
+                <div className={styles.catalogActions}>
+                  <button className="btn btnGlass" onClick={() => setDetail(it)}>Ver</button>
                 </div>
               </Card>
             ))}
@@ -127,7 +124,6 @@ export default function CatalogModal({ open, onClose }) {
         </div>
       </div>
 
-      {/* detalle en modal separado (imagen grande + info) */}
       {detail && <ProductDetailModal item={detail} onClose={() => setDetail(null)} />}
     </>
   )
