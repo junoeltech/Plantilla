@@ -1019,3 +1019,17 @@
   background: #8b5e3c;
   transform: scale(1.1);
 }
+
+.extraNote {
+  margin-top: 1rem;
+  color: #6b4f2d;
+  font-style: italic;
+}
+
+.testimonial {
+  margin-top: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid #6b4f2d;
+  color: #444;
+  font-style: italic;
+}

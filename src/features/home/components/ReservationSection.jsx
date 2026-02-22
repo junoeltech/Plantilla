@@ -19,6 +19,22 @@ export default function ReservationSection(){
               <li>Reservas hasta 8 personas</li>
               <li>Pedidos para llevar y eventos</li>
             </ul>
+
+            {/* Variante 1: Información práctica */}
+            <p className={styles.extraNote}>
+              Reservaciones disponibles todos los días de 9:00 a 22:00.  
+              Se recomienda reservar con 24 horas de anticipación.
+            </p>
+
+            {/* Variante 2: Frase cálida */}
+            <p className={styles.extraNote}>
+              ¡Queremos que tu visita sea especial y acogedora, como un buen café compartido!
+            </p>
+
+            {/* Variante 3: Testimonio breve */}
+            <blockquote className={styles.testimonial}>
+              “El mejor lugar para disfrutar un café con amigos.” — Cliente frecuente
+            </blockquote>
           </div>
 
           <form className={`${styles.resForm} ${styles.reveal} ${visible ? styles.isVisible : ''}`} onSubmit={(e)=>{e.preventDefault(); alert('Reserva enviada')}}>
