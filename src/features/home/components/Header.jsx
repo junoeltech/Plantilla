@@ -14,18 +14,36 @@ export default function Header() {
   const navRef = useRef(null)
   const [indicatorStyle, setIndicatorStyle] = useState({ left: 0, width: 0, opacity: 0 })
   const [activeId, setActiveId] = useState(null)
+  const manualScrollRef = useRef(false)
 
-  function onNavClick(e, targetId) {
-    e.preventDefault()
-    const target = document.getElementById(targetId)
-    const headerEl = headerRef.current
-    if (!target) return
-    const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 0
-    const scrollTo = window.pageYOffset + target.getBoundingClientRect().top - headerHeight - 12 // small gap
-    window.scrollTo({ top: scrollTo, behavior: 'smooth' })
-    setActiveId(targetId)
-    moveIndicatorTo(targetId)
-  }
+
+function onNavClick(e, targetId) {
+  e.preventDefault()
+
+  const target = document.getElementById(targetId)
+  const headerEl = headerRef.current
+  if (!target) return
+
+  const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 0
+  const scrollTo =
+    window.pageYOffset +
+    target.getBoundingClientRect().top -
+    headerHeight -
+    12
+
+  manualScrollRef.current = true  
+
+  window.scrollTo({
+    top: scrollTo,
+    behavior: 'smooth',
+  })
+
+  setActiveId(targetId)
+  moveIndicatorTo(targetId)
+  setTimeout(() => {
+    manualScrollRef.current = false
+  }, 900)
+}
 
   function moveIndicatorTo(id) {
     if (!navRef.current) return setIndicatorStyle(s => ({ ...s, opacity: 0 }))
@@ -58,8 +76,9 @@ export default function Header() {
 
     const observer = new IntersectionObserver(
       entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
+       entries.forEach(entry => {
+  if (manualScrollRef.current) return
+  if (entry.isIntersecting) {
             const id = entry.target.id
             setActiveId(id)
             moveIndicatorTo(id)
